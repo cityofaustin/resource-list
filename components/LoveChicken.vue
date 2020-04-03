@@ -1,9 +1,13 @@
 <template>
-  <img class="VuetifyLogo" alt="Vuetify Logo" src="/vuetify-logo.svg" />
+  <img
+    class="LoveChicken"
+    alt="Love chicken"
+    src="/love-chicken.jpg"
+  >
 </template>
 
 <style>
-.VuetifyLogo {
+.LoveChicken{
   height: 180px;
   width: 180px;
   transform: rotateY(560deg);
@@ -12,7 +16,7 @@
 
 @keyframes turn {
   100% {
-    transform: rotateY(0deg);
+    transform: rotateX(0deg);
   }
 }
 </style>
