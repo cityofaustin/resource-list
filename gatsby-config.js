@@ -92,6 +92,7 @@ module.exports = {
             tableName: process.env.AIRTABLE_TABLE,
             tableView: process.env.AIRTABLE_VIEW,
             queryName: `resources`,
+            // plugin feature that helps prevent missing data from breaking build
             defaultValues: {
                Name: "",
                Link: "",
