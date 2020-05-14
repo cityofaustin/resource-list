@@ -24,21 +24,25 @@ import { DEFAULT_DEBOUNCE, CITY_ZIPS } from "../constants"
 
 export const PAGE_SIZE = 10
 
+// this is the 'category' column in the data
+// I have arbitrary chosen examples categories just based
+// on how often they seem to appear
+// TODO: the oft discussed massive amounts of data cleaning
 const WHAT_OPTIONS = [
-  "Money",
-  "Food",
+  "Case Management",
+  "Emergency Shelter",
   "Housing",
-  "Health",
-  "Mental Health",
-  "Utilities",
+  "Clothing",
+  "Food",
+  "Health and Healthcare",
   "Legal Help",
 ]
 const WHO_OPTIONS = [
-  "Families",
-  "Immigrants",
-  "LGBTQI",
-  "Business Owners",
-  "Students",
+  "We Don't",
+  "Have These",
+  "In the data",
+  "but",
+  "we should",
 ]
 // ideally these could get tied to what is identified as supported in config
 const LANGUAGE_OPTIONS = [
@@ -52,6 +56,9 @@ const LANGUAGE_OPTIONS = [
   "Vietnamese",
   "Gujarati",
 ]
+
+// assign a level value to these params so they can be prioritized differently
+// depending on configuration
 export const LEVEL_ENUM = {
   State: 1,
   County: 2,
