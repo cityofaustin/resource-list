@@ -1,69 +1,69 @@
-name: Deploy
+# name: Deploy
 
-on:
-  push:
-    branches:
-      - development
-      - master
-  schedule:
-    - cron: "0 11,23 * * *" # Run at 6am and 6pm Central
+# on:
+#   push:
+#     branches:
+#       - development
+#       - master
+#   schedule:
+#     - cron: "0 11,23 * * *" # Run at 6am and 6pm Central
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: us-east-2
-  AIRTABLE_BASE: ${{ secrets.AIRTABLE_BASE }}
-  AIRTABLE_KEY: ${{ secrets.AIRTABLE_KEY }}
-  AIRTABLE_TABLE: ${{ secrets.AIRTABLE_TABLE }}
-  AIRTABLE_VIEW: ${{ secrets.AIRTABLE_VIEW }}
-  REPORT_ERROR_PATH: ${{ secrets.REPORT_ERROR_PATH }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+# env:
+#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   AWS_DEFAULT_REGION: us-east-2
+#   AIRTABLE_BASE: ${{ secrets.AIRTABLE_BASE }}
+#   AIRTABLE_KEY: ${{ secrets.AIRTABLE_KEY }}
+#   AIRTABLE_TABLE: ${{ secrets.AIRTABLE_TABLE }}
+#   AIRTABLE_VIEW: ${{ secrets.AIRTABLE_VIEW }}
+#   REPORT_ERROR_PATH: ${{ secrets.REPORT_ERROR_PATH }}
+#   SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
-jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
 
-      - uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
+#       - uses: actions/setup-python@v1
+#         with:
+#           python-version: 3.7
 
-      - name: Install AWS CLI
-        run: |
-          python -m pip install --upgrade pip
-          pip install awscli
+#       - name: Install AWS CLI
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install awscli
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "11.x"
+#       - uses: actions/setup-node@v1
+#         with:
+#           node-version: "11.x"
 
-      - name: Cache JS dependencies
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            npm-
+#       - name: Cache JS dependencies
+#         uses: actions/cache@v1
+#         with:
+#           path: node_modules
+#           key: npm-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             npm-
 
-      - run: make install
+#       - run: make install
 
-      - name: "Staging: Build and deploy"
-        if: github.ref == 'refs/heads/development'
-        env:
-          SITE_URL: https://covid-staging.citybureau.org
-          S3_BUCKET: site-owner-covid-staging
-          CLOUDFRONT_ID: ${{ secrets.CLOUDFRONT_ID_STAGE }}
-        run: |
-          make build
-          make deploy
+#       - name: "Staging: Build and deploy"
+#         if: github.ref == 'refs/heads/development'
+#         env:
+#           SITE_URL: https://covid-staging.citybureau.org
+#           S3_BUCKET: site-owner-covid-staging
+#           CLOUDFRONT_ID: ${{ secrets.CLOUDFRONT_ID_STAGE }}
+#         run: |
+#           make build
+#           make deploy
 
-      - name: "Production: Build and deploy"
-        if: github.ref == 'refs/heads/master'
-        env:
-          S3_BUCKET: site-owner-covid-prod
-          CLOUDFRONT_ID: ${{ secrets.CLOUDFRONT_ID_PROD }}
-        run: |
-          make build
-          make deploy
+#       - name: "Production: Build and deploy"
+#         if: github.ref == 'refs/heads/master'
+#         env:
+#           S3_BUCKET: site-owner-covid-prod
+#           CLOUDFRONT_ID: ${{ secrets.CLOUDFRONT_ID_PROD }}
+#         run: |
+#           make build
+#           make deploy
